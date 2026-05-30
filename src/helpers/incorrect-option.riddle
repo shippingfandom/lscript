@@ -1,0 +1,5 @@
+defun Lazy.Helpers.IncorrectOptionReturnTo(Callback) {
+    Lazy.Visuals.Output("An incorrect option was selected. Try again, you got this!!!");
+    globals.command.pause("3");
+    return Callback();
+}

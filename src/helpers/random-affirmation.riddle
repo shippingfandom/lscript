@@ -1,0 +1,17 @@
+defun Lazy.Helpers.RandomAffirmation(affirmations = []) {
+    if !affirmations {
+        affirmations <- [
+            "Good is good enough",
+            "Kindness connects people",
+            "Every mistake is a lesson",
+            "Compassion needs no reason",
+            "Today holds quiet good things",
+            "Small steps lead to big change",
+            "Growth happens in stillness too",
+            "Help given freely lifts everyone",
+            "The world is full of second chances"
+        ];
+    }
+    affirmations->shuffle();
+    return affirmations->pull();
+}

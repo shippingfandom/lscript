@@ -1,0 +1,51 @@
+defun Lazy.Menu.UtilitiesInstaller() {
+    globals.command.clear();
+    Lazy.Visuals.Header("Utilities Installer");
+    Lazy.Visuals.ShowMenu([
+        [[1, "Crypto library"]],
+        [[2, "Metaxploit library"]],
+        [[3, "AdminMonitor.exe"],       ["a", "Everything listed"],     ["all", "Everything listed"]],
+        [[0, "Back"],                   ["q", "Back"],                  ["e", "Back"]]
+    ]);
+    binaries = ["crypto.so", "metaxploit.so", "AdminMonitor.exe"];
+    return Lazy.Helpers.ToMainIfNot(Lazy.Conditions.Network() && Lazy.Conditions.Root(), lambda() {
+        choice = Lazy.Visuals.Input(":: ");
+        if (1 <= choice <= binaries->len() || choice == "a" || choice == "all") {
+            installs = [];
+            if choice == "a" || choice == "all" {
+                installs <- binaries;
+            } else {
+                installs <- [binaries[choice - 1]];
+            }
+            foreach _ binary in installs {
+                target = globals.command.pwd();
+                action = 0;
+                if Lazy.Helpers.HasExtension(binary, ".so") {
+                    target <- "/lib";
+                    action <- 1;
+                } else if Lazy.Helpers.HasExtension(binary, ".exe") {
+                    target <- "/usr/bin";
+                    action <- 2;
+                }
+                globals.command.aptm("-i", binary, target);
+                if action == 1 {
+                    globals.command.aptm("--hotswap");
+                } if action == 2 {
+                    fullPath = gl-pathcat(["/usr/bin", binary]);
+                    globals.command.usr("-r", "guest", fullPath);
+                    globals.command.grp("-r", "guest", fullPath);
+                    globals.command.perms("o+rwx", fullPath);
+                    globals.command.perms("g+rwx", fullPath);
+                    globals.command.perms("u+rwx", fullPath);
+                }
+            }
+            Lazy.Visuals.Output("Done!");
+            globals.command.pause("-m");
+            return Lazy.Menu.UtilitiesInstaller();
+        } else if choice == 0 || choice == "q" || choice == "e" {
+            return Lazy.Menu.Main();
+        } else {
+            return Lazy.Helpers.IncorrectOptionReturnTo(Lazy.Menu.UtilitiesInstaller);
+        }
+    });
+}

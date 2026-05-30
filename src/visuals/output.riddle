@@ -1,0 +1,7 @@
+defun Lazy.Visuals.Output(message) {
+    parts = message->split(char(10));
+    foreach idx part in parts {
+        parts[idx] = globals.colorWhite+part;
+    }
+    gl-break-silence(parts->join(char(10)));
+}

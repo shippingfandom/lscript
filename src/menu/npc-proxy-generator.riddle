@@ -1,0 +1,41 @@
+defun Lazy.Menu.NpcProxyGenerator() {
+    globals.command.clear();
+    Lazy.Visuals.Header("NPC Proxy Generator");
+    return Lazy.Helpers.ToMainIfNot(Lazy.Conditions.Network() && Lazy.Conditions.Metaxploit(), lambda() {
+        shouldContinue = Lazy.Visuals.InputAffirmation( "You are about to hack into the random NPCs to create yourself a proxy\n"
+                                                    +   "This is a potentially unsafe operation and may take a while to complete!\n"
+                                                    +   "However, you will be presented a cleanup menu after this (0.0 )");
+        if !shouldContinue {
+            return Lazy.Menu.Main();
+        } else {
+            quantity = null;
+            while typeof(quantity) != "number" && quantity != "" {
+                quantity <- Lazy.Visuals.Input("Quantity :: ");
+            }
+            if !quantity || quantity <= 0 {
+                return Lazy.Menu.Main();
+            } else {
+                globals.command.kraken("-r", quantity+"");
+                Lazy.Visuals.Output("Should we run undercover -b -c?");
+                choice = Lazy.Visuals.Input("(Y/n) :: ");
+                if choice->lower() != "n" {
+                    globals.command.undercover("-b", "-c");
+                }
+                shouldContinue = true;
+                while shouldContinue {
+                    gl-break-silence(globals.command.tws("s", "l"));
+                    Lazy.Visuals.Output("Enter an index which we will try to hack and clean or simply press enter to skip!");
+                    choice <- Lazy.Visuals.Input("Buffer index :: ");
+                    if choice == "" {
+                        shouldContinue <- false;
+                    } else {
+                        Lazy.Visuals.Output("You have to do this manually for now...");
+                    }
+                }
+                Lazy.Visuals.Output("Done!");
+                globals.command.pause("-m");
+                return Lazy.Menu.Main();
+            }
+        }
+    });
+}

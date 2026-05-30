@@ -1,0 +1,7 @@
+defun Lazy.Menu.Stub() {
+    globals.command.clear();
+    Lazy.Visuals.Header("Stub");
+    Lazy.Visuals.Output("This menu is not implemented yet! Check it out later! <3");
+    globals.command.pause("3");
+    return Lazy.Menu.Main();
+}

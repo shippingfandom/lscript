@@ -1,0 +1,6 @@
+defun Lazy.Helpers.SilentCall(Callback) {
+    silentState = globals.SILENT; globals.SILENT = 2;
+    result = Callback();
+    globals.SILENT = silentState;
+    return result;
+}

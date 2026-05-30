@@ -1,0 +1,5 @@
+defun Lazy.Conditions.Root(skip = false) {
+    return Lazy.Helpers.CreateCondition("This functionality requires root access, sorry!!!", skip, lambda () {
+        return globals.command.whoami() == "root";
+    });
+}

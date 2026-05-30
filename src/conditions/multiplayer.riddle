@@ -1,0 +1,5 @@
+defun Lazy.Conditions.Multiplayer(skip = false) {
+    return Lazy.Helpers.CreateCondition("This functionality is limited in singleplayer, sorry!!!", skip, lambda () {
+        return typeof(globals.command.file("-r", "/usr/bin/Chat.exe")) == "file";
+    });
+}

@@ -1,0 +1,3 @@
+defun Lazy.Helpers.HasExtension(filename, extension) {
+    return filename->indexOf(extension) == filename->len() - extension->len();
+}

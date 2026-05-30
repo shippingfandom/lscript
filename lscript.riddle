@@ -1,0 +1,8 @@
+#include "src/headers.riddle";
+#include "src/conditions/*.riddle";
+#include "src/helpers/*.riddle";
+#include "src/menu/*.riddle";
+#include "src/visuals/*.riddle";
+
+Lazy.VERSION = "v0.0.1";
+Lazy.Menu.Main();

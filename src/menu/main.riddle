@@ -1,0 +1,33 @@
+defun Lazy.Menu.Main() {
+    globals.command.clear();
+    Lazy.Visuals.Ascii();
+    Lazy.Visuals.ShowMenu([
+        [[1, "Wifi cracker"],               [5, "Marinette installer"]],
+        [[2, "Service finder"],             [6, "Sync /root and ~/"]],
+        [[3, "Utilities installer"],        [7, "System cleaner"]],
+        [[4, "NPC proxy generator"],        [8, "Akari 5hellified"]],
+        [[0, "Close"],                      ["q", "Quit"],                 ["e", "Exit"]]
+    ]);
+    choice = Lazy.Visuals.Input(":: ");
+    if choice == 1 {
+        globals.command.air();
+        return Lazy.Menu.Main();
+    } else if choice == 2 {
+        return Lazy.Menu.ServiceFinder();
+    } else if choice == 3 {
+        return Lazy.Menu.UtilitiesInstaller();
+    } else if choice == 4 {
+        return Lazy.Menu.NpcProxyGenerator();
+    } else if choice == 5 {
+        return Lazy.Menu.MarinetteInstaller();
+    } else if choice == 6 {
+        return Lazy.Menu.SyncRootAndHome();
+    } else if choice <= 8 {
+        return Lazy.Menu.Stub();
+    } else if choice == 0 || choice == "q" || choice == "e" {
+        globals.command.clear();
+        return globals.colorWhite+"Удачкиии~ .( ^.^)v"+globals.CT;
+    } else {
+        return Lazy.Helpers.IncorrectOptionReturnTo(Lazy.Menu.Main);
+    }
+}

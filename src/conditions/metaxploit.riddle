@@ -1,0 +1,5 @@
+defun Lazy.Conditions.Metaxploit(skip = false) {
+    return Lazy.Helpers.CreateCondition("This functionality requires metaxploit library, sorry!!!", skip, lambda () {
+        return typeof(globals.command.bios("-x")) == "MetaxploitLib";
+    });
+}

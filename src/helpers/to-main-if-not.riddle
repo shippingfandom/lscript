@@ -1,0 +1,7 @@
+defun Lazy.Helpers.ToMainIfNot(condition, Callback) {
+    if !condition {
+        return Lazy.Menu.Main();
+    } else {
+        return Callback();
+    }
+}

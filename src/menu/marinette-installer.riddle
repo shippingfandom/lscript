@@ -1,0 +1,48 @@
+defun Lazy.Menu.MarinetteInstaller() {
+    globals.command.clear();
+    Lazy.Visuals.Header("Marinette Installer");
+    return Lazy.Helpers.ToMainIfNot(Lazy.Conditions.Root(), lambda() {
+        shouldContinue = Lazy.Visuals.InputAffirmation( "You are about to install 5hell/Marinette as your /bin/bash replacement\n"
+                                                    +   "/bin/bash reads rkit from your home user, so it will be copied to there");
+        if !shouldContinue {
+            return Lazy.Menu.Main();
+        } else {
+            Lazy.Visuals.Output("Please choose your home user!");
+            users = Lazy.Helpers.AvailableUsers();
+            foreach index user in users {
+                Lazy.Visuals.Output((index + 1)+") "+user);
+            }
+            user = null;
+            while typeof(user) != "number" && user != "" {
+                user <- Lazy.Visuals.Input("User :: ");
+            }
+            if !user || user <= 0 {
+                return Lazy.Menu.Main();
+            } else if !(1 <= user <= users->len()){
+                return Lazy.Helpers.IncorrectOptionReturnTo(Lazy.Menu.Main);
+            } else {
+                user <- users[user - 1];
+                home = gl-pathcat(["/home", user]);
+                Lazy.Visuals.Output("Copying 5hell to "+home+"...");
+                globals.command.cp("/root/rkit", home);
+                rkit = gl-pathcat([home, "rkit"]);
+                globals.command.usr("-r", "guest", rkit);
+                globals.command.grp("-r", "guest", rkit);
+                globals.command.perms("-r", "o+rwx", rkit);
+                globals.command.perms("-r", "g+rwx", rkit);
+                globals.command.perms("-r", "u+rwx", rkit);
+                Lazy.Visuals.Output("Copying 5hell to /bin/bash...");
+                shell = program_path();
+                globals.command.cp(shell, "/bin/bash");
+                globals.command.usr("-r", "guest", "/bin/bash");
+                globals.command.grp("-r", "guest", "/bin/bash");
+                globals.command.perms("-r", "o+rwx", "/bin/bash");
+                globals.command.perms("-r", "g+rwx", "/bin/bash");
+                globals.command.perms("-r", "u+rwx", "/bin/bash");
+                Lazy.Visuals.Output("Done!");
+                globals.command.pause("-m");
+                return Lazy.Menu.Main();
+            }
+        }
+    });
+}

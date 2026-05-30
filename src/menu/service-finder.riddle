@@ -1,0 +1,43 @@
+defun Lazy.Menu.ServiceFinder() {
+    globals.command.clear();
+    Lazy.Visuals.Header("Service Finder");
+    Lazy.Visuals.ShowMenu([
+        [[1, "Repository"]],
+        [[2, "Rshell"]],
+        [[3, "SMTP"],               ["m", "Enter manually"]],
+        [[0, "Back"],               ["q", "Back"],                 ["e", "Back"]]
+    ]);
+    services = ["repository", "rshell", "smtp"];
+    return Lazy.Helpers.ToMainIfNot(Lazy.Conditions.Network(), lambda() {
+        choice = Lazy.Visuals.Input(":: ");
+        if (1 <= choice <= services->len()) || choice == "m" {
+            pattern = null;
+            if choice == "m" {
+                pattern <- Lazy.Visuals.Input("Pattern :: ");
+            } else {
+                pattern <- "^.*>open .*>"+services[choice - 1]+" .*$";
+            }
+            quantity = null;
+            while typeof(quantity) != "number" && quantity != "" && pattern {
+                quantity <- Lazy.Visuals.Input("Quantity :: ");
+            }
+            if !quantity || quantity <= 0 || !pattern {
+                return Lazy.Menu.ServiceFinder();
+            } else {
+                for i = 0; i < quantity; ++i {
+                    address = globals.command.netstalk(pattern);
+                    if choice == 1 && globals.command.porter("1542", address) == address {
+                        globals.command.aptm("-a", address);
+                    }
+                }
+                Lazy.Visuals.Output("Done!");
+                globals.command.pause("-m");
+                return Lazy.Menu.ServiceFinder();
+            }
+        } else if choice == 0 || choice == "q" || choice == "e" {
+            return Lazy.Menu.Main();
+        } else {
+            return Lazy.Helpers.IncorrectOptionReturnTo(Lazy.Menu.ServiceFinder);
+        }
+    });
+}

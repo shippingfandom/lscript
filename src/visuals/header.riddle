@@ -1,0 +1,5 @@
+defun Lazy.Visuals.Header(message, length=70) {
+    half = ceil((ceil(length / 2) - ceil(message->len() / 2)) / 2);
+    message <- globals.colorWhite+("- " * half)->trim()+globals.colorViolet+message+globals.colorWhite+("- " * half)->trim();
+    gl-break-silence(message);
+}

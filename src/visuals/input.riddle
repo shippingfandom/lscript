@@ -1,0 +1,29 @@
+defun Lazy.Visuals.Input(message) {
+    return user_input(globals.colorWhite+message)->trim()->to_int();
+}
+
+defun Lazy.Visuals.InputAffirmation(message) {
+    gl-break-silence(globals.colorViolet+"Time for a little selfcare! <3");
+    gl-break-silence("");
+    Lazy.Visuals.Output(message);
+    gl-break-silence("");
+    affirmation = Lazy.Helpers.RandomAffirmation();
+    Lazy.Visuals.Output("If you understand the message above, please enter this simple affirmation I have prepaired for you <3");
+    Lazy.Visuals.Output("Or simply press enter if you want to go back (^.^ )");
+    gl-break-silence("");
+    Lazy.Visuals.Output(globals.colorMagenta+affirmation);
+    gl-break-silence("");
+    message = "";
+    shouldContinue = true;
+    while shouldContinue {
+        message <- Lazy.Visuals.Input(":: ");
+        if affirmation != message && message != "" {
+            Lazy.Visuals.Output("You filled an affirmation incorrectly!");
+            Lazy.Visuals.Output("Please try again, you got this!!!");
+            Lazy.Visuals.Output("Or, if you need, you can go back with just an enter press <3");
+        } else {
+            shouldContinue <- false;
+        }
+    }
+    return message != "";
+}

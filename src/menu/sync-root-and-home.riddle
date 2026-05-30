@@ -1,0 +1,77 @@
+defun Lazy.Menu.SyncRootAndHome() {
+    globals.command.clear();
+    Lazy.Visuals.Header("Sync /root and ~/");
+    Lazy.Visuals.ShowMenu([
+        [[1, "/root/rkit -> ~/rkit"], [3, "/root/Config -> ~/Config"]],
+        [[2, "~/rkit -> /root/rkit"], [4, "~/Config -> /root/Config"]],
+        [[0, "Back"],               ["q", "Back"],                 ["e", "Back"]]
+    ]);
+    return Lazy.Helpers.ToMainIfNot(Lazy.Conditions.Root(), lambda() {
+        choice = Lazy.Visuals.Input(":: ");
+        if (1 <= choice <= 4) {
+            Lazy.Visuals.Output("Please choose your home user!");
+            users = Lazy.Helpers.AvailableUsers();
+            foreach index user in users {
+                Lazy.Visuals.Output((index + 1)+") "+user);
+            }
+            user = null;
+            while typeof(user) != "number" && user != "" {
+                user <- Lazy.Visuals.Input("User :: ");
+            }
+            if !user || user <= 0 {
+                return Lazy.Menu.Main();
+            } else if !(1 <= user <= users->len()){
+                return Lazy.Helpers.IncorrectOptionReturnTo(Lazy.Menu.Main);
+            } else {
+                user <- users[user - 1];
+                home = gl-pathcat(["/home", user]);
+                rkit = gl-pathcat([home, "rkit"]);
+                config = gl-pathcat([home, "Config"]);
+                if choice == 1 {
+                    // /root/rkit -> ~/rkit
+                    Lazy.Visuals.Output("Copying /root/rkit to "+home+"...");
+                    globals.command.cp("/root/rkit", home);
+                    globals.command.usr("-r", "guest", rkit);
+                    globals.command.grp("-r", "guest", rkit);
+                    globals.command.perms("-r", "o+rwx", rkit);
+                    globals.command.perms("-r", "g+rwx", rkit);
+                    globals.command.perms("-r", "u+rwx", rkit);
+                } else if choice == 2 {
+                    // ~/rkit -> /root/rkit
+                    Lazy.Visuals.Output("Copying "+rkit+" to /root...");
+                    globals.command.cp(rkit, "/root");
+                    globals.command.usr("-r", "root", "/root/rkit");
+                    globals.command.grp("-r", "root", "/root/rkit");
+                    globals.command.perms("-r", "o-rwx", "/root/rkit");
+                    globals.command.perms("-r", "g-rwx", "/root/rkit");
+                    globals.command.perms("-r", "u-rwx", "/root/rkit");
+                } else if choice == 3 {
+                    // /root/Config -> ~/Config
+                    Lazy.Visuals.Output("Copying /root/Config to "+home+"...");
+                    globals.command.cp("/root/Config", home);
+                    globals.command.usr("-r", "guest", config);
+                    globals.command.grp("-r", "guest", config);
+                    globals.command.perms("-r", "o+rwx", config);
+                    globals.command.perms("-r", "g+rwx", config);
+                    globals.command.perms("-r", "u+rwx", config);
+                } else if choice == 4 {
+                    // ~/Config -> /root/Config
+                    Lazy.Visuals.Output("Copying "+config+" to /root...");
+                    globals.command.cp(config, "/root");
+                    globals.command.usr("-r", "root", "/root/Config");
+                    globals.command.grp("-r", "root", "/root/Config");
+                    globals.command.perms("-r", "o-rwx", "/root/Config");
+                    globals.command.perms("-r", "g-rwx", "/root/Config");
+                    globals.command.perms("-r", "u-rwx", "/root/Config");
+                }
+                Lazy.Visuals.Output("Done!");
+                globals.command.pause("-m");
+                return Lazy.Menu.SyncRootAndHome();
+            }
+        } else if choice == 0 || choice == "q" || choice == "e" {
+            return Lazy.Menu.Main();
+        } else {
+            return Lazy.Helpers.IncorrectOptionReturnTo(Lazy.Menu.SyncRootAndHome);
+        }
+    });
+}

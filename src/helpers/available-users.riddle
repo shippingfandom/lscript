@@ -1,0 +1,12 @@
+defun Lazy.Helpers.AvailableUsers() {
+    return Lazy.Helpers.SilentCall(lambda () {
+        users = [];
+        if typeof(globals.command.file("-r", "/home")) == "file" {
+            homeDirectory = globals.command.ls("-r", "/home")->split(char(10));
+            foreach _ user in homeDirectory {
+                users->push(user->trim());
+            }
+        }
+        return users;
+    });
+}

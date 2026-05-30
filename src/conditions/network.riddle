@@ -1,0 +1,5 @@
+defun Lazy.Conditions.Network(skip = false) {
+    return Lazy.Helpers.CreateCondition("This functionality requires network connection, sorry!!!", skip, lambda () {
+        return globals.command.ifconfig()->trim() != "No active network connection.";
+    });
+}

@@ -1,0 +1,5 @@
+namespace Lazy {}
+namespace Lazy.Conditions {}
+namespace Lazy.Helpers {}
+namespace Lazy.Menu {}
+namespace Lazy.Visuals {}

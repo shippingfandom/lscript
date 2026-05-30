@@ -1,0 +1,13 @@
+defun Lazy.Visuals.ShowMenu(menu, gap=29) {
+    content = "";
+    foreach _ line in menu {
+        foreach _ part in line {
+            label = part[0]+""; text = part[1]+"";
+            space = gap - ((label+")")->len() + text->len());
+            content += globals.colorLightBlue+label+globals.colorWhite+") "+text+(" "*space);
+        }
+        content->trim();
+        content += "\n";
+    }
+    gl-break-silence(content->trim());
+}

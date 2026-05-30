@@ -1,0 +1,10 @@
+defun Lazy.Helpers.CreateCondition(unmetMessage, skipFalsy, Callback) {
+    return Lazy.Helpers.SilentCall(lambda () {
+        condition = Callback();
+        if !condition && !skipFalsy {
+            Lazy.Visuals.Output(unmetMessage);
+            globals.command.pause("3");
+        }
+        return condition;
+    });
+}

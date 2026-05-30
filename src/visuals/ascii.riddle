@@ -1,0 +1,12 @@
+defun Lazy.Visuals.Ascii() {
+    gl-break-silence(globals.colorViolet+"            /$$");
+    gl-break-silence(globals.colorViolet+"           | $$");
+    gl-break-silence(globals.colorViolet+"           | $$        /$$$$$$  /$$$$$$$$ /$$   /$$     "+globals.colorWhite+Lazy.VERSION);
+    gl-break-silence(globals.colorViolet+"           | $$       |____  $$|____ /$$/| $$  | $$");
+    gl-break-silence(globals.colorViolet+"           | $$        /$$$$$$$   /$$$$/ | $$  | $$        "+globals.colorWhite+"by "+globals.colorViolet+"not_s0phie");
+    gl-break-silence(globals.colorViolet+"           | $$       /$$__  $$  /$$__/  | $$  | $$");
+    gl-break-silence(globals.colorViolet+"     The   | $$$$$$$$|  $$$$$$$ /$$$$$$$$|  $$$$$$$   script");
+    gl-break-silence(globals.colorViolet+"           |________/ \\_______/|________/ \\____  $$");
+    gl-break-silence(globals.colorViolet+"                                         |  $$$$$$/");
+    gl-break-silence(globals.colorViolet+"                                          \\______/");
+}
